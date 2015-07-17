@@ -1,0 +1,28 @@
+---
+- name: test the junos
+  hosts: junos
+  roles:
+    - Juniper.junos
+  connection: local
+  gather_facts: yes
+  vars_files:
+    - config_vars.yml
+  tasks:
+    - name: Checking NETCONF connectivity
+      wait_for: host={{ router_ip }} port=830 timeout=5
+    - name: get facts using junos modules
+      junos_get_facts: >
+        host={{ router_ip }}
+        user={{ username }}
+        passwd={{ password }}
+        port=830
+      register: junos
+    - shell: echo {{ junos.facts }} > ./results/1.json
+    - name: installing the configuration
+      junos_install_config: >
+        host={{ router_ip }}
+        user={{ username }}
+        passwd={{ password }}
+        port=830
+        file=test.set
+
