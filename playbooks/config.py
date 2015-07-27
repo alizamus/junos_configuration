@@ -2,7 +2,7 @@
 
 import sys
 import netaddr
-
+import os
 
 if __name__ == '__main__':
 	print '<<<<<<<<<< start of configuration >>>>>>>>>>'
@@ -172,6 +172,8 @@ if __name__ == '__main__':
         #f.write('\n')
         f.write('delete groups MTU interfaces <*> mtu 2000')
         f.close()
+        command = 'ssh-keygen -R ' + str(router_ip)
+        os.system(command)
 	print '<<<<<<<<<< configuration is done >>>>>>>>>>'
 	print '<<<<<<<<<< if you want to set configuration run : ansible-playbook junos.yml >>>>>>>>>>'
         print '<<<<<<<<<< if you want to delete configuration run : ansible-playbook junos-del.yml >>>>>>>>>>'
